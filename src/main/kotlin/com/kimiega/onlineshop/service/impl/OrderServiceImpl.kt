@@ -5,6 +5,7 @@ import com.kimiega.onlineshop.datamapper.ProductDataMapper
 import com.kimiega.onlineshop.datamapper.ProductOrderDataMapper
 import com.kimiega.onlineshop.datamapper.ProductOrderKey
 import com.kimiega.onlineshop.entity.*
+import com.kimiega.onlineshop.exception.CouldNotBeSentException
 import com.kimiega.onlineshop.exception.NoSuchOrderException
 import com.kimiega.onlineshop.exception.NotEnoughProductsException
 import com.kimiega.onlineshop.externalService.ExternalDeliveryService
@@ -72,14 +73,23 @@ class OrderServiceImpl(
             .foldRight(0.0, Double::plus)
 
     override fun sendPackage(orderId: Long, userInfo: UserInfo): DeliveryInfo {
-        //TODO check Is already sent
         val order = orderRepository.findById(orderId)
         if (order.isEmpty)
             throw NoSuchOrderException("Order #${orderId} doesn't exists")
+        if (!checkIsSentable(orderId))
+            throw CouldNotBeSentException("Order #${orderId} couldn't be sent")
         return externalDeliveryService.sendPackage(DeliveryDetails(
             orderId = order.get().id!!,
             products = order.get().listOfProducts!!.map {ProductOrder(it.id!!.productId!!, it.count!!)},
             userEmail = userInfo.userEmail
         ))
+    }
+
+    private fun checkIsSentable(orderId: Long): Boolean {
+        val statuses = orderStatusLogService.getOrderStatuses(orderId)
+        if (statuses.any { it.status == EOrderStatus.Paid.name })
+            if (statuses.none { it -> it.status == EOrderStatus.InDelivery.name || statuses.none { it.status == EOrderStatus.Canceled.name}})
+                return true
+        return false
     }
 }
