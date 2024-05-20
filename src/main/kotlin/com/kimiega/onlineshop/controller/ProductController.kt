@@ -6,6 +6,7 @@ import com.kimiega.onlineshop.dto.response.ProductsResponse
 import com.kimiega.onlineshop.service.ProductService
 import io.swagger.v3.oas.annotations.tags.Tag
 import org.springframework.http.ResponseEntity
+import org.springframework.security.access.prepost.PreAuthorize
 import org.springframework.web.bind.annotation.GetMapping
 import org.springframework.web.bind.annotation.PathVariable
 import org.springframework.web.bind.annotation.PostMapping
@@ -20,12 +21,14 @@ class ProductController(
     val productService: ProductService,
 ) {
     @GetMapping
+    @PreAuthorize("hasAuthority('READ_PRODUCT')")
     fun getProducts(): ResponseEntity<ProductsResponse> {
         val products = productService.getProducts()
         return ResponseEntity.ok(ProductsResponse(products.map{ProductResponse(it)}))
     }
 
     @PostMapping
+    @PreAuthorize("hasAuthority('ADD_PRODUCT')")
     fun addProduct(
         @RequestBody product: ProductRequest,
     ): ResponseEntity<Void> {
@@ -34,6 +37,7 @@ class ProductController(
     }
 
     @GetMapping("/{productId}")
+    @PreAuthorize("hasAuthority('READ_PRODUCT')")
     fun getProduct(
         @PathVariable("productId") productId: Long
     ): ResponseEntity<ProductResponse> {

@@ -41,7 +41,7 @@ class GlobalRestControllerExceptionHandler : ResponseEntityExceptionHandler() {
     }
 
     @ExceptionHandler(value = [
-        OrderNotPaidException::class
+        CouldNotBeSentException::class, DuplicatedUsernameException::class, WrongUsernameException::class, NoSuchRoleException::class, NoSuchPrivilegeException::class, OrderNotPaidException::class, NoSuchUsernameException::class
     ])
     @ResponseStatus(HttpStatus.BAD_REQUEST)
     protected fun handleOrderNotPaid(
@@ -51,6 +51,20 @@ class GlobalRestControllerExceptionHandler : ResponseEntityExceptionHandler() {
         return handleExceptionInternal(
             ex, bodyOfResponse,
             HttpHeaders(), HttpStatus.BAD_REQUEST, request
+        )
+    }
+
+    @ExceptionHandler(value = [
+        ForbiddenException::class
+    ])
+    @ResponseStatus(HttpStatus.NOT_FOUND)
+    protected fun forbiddenException(
+        ex: RuntimeException, request: WebRequest,
+    ): ResponseEntity<Any>? {
+        val bodyOfResponse = ex.message!!
+        return handleExceptionInternal(
+            ex, bodyOfResponse,
+            HttpHeaders(), HttpStatus.FORBIDDEN, request
         )
     }
 }

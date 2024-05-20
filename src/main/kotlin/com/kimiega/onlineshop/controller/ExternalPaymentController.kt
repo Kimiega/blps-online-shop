@@ -4,10 +4,7 @@ import com.kimiega.onlineshop.dto.request.ExternalPaymentResultRequest
 import com.kimiega.onlineshop.externalService.AcceptablePaymentService
 import io.swagger.v3.oas.annotations.tags.Tag
 import org.springframework.http.ResponseEntity
-import org.springframework.web.bind.annotation.PostMapping
-import org.springframework.web.bind.annotation.RequestBody
-import org.springframework.web.bind.annotation.RequestMapping
-import org.springframework.web.bind.annotation.RestController
+import org.springframework.web.bind.annotation.*
 
 @RestController
 @RequestMapping("/api/externalPayment")
@@ -16,6 +13,7 @@ class ExternalPaymentController(
     val paymentService: AcceptablePaymentService,
 ) {
     @PostMapping
+    @CrossOrigin(origins = ["http://localhost:8080"])
     fun newPayment(
         @RequestBody payment: ExternalPaymentResultRequest,
     ) : ResponseEntity<Void> {

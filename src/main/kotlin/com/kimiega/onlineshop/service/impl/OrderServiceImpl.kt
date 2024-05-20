@@ -1,16 +1,16 @@
 package com.kimiega.onlineshop.service.impl
 
-import com.kimiega.onlineshop.datamapper.OrderDataMapper
-import com.kimiega.onlineshop.datamapper.ProductDataMapper
-import com.kimiega.onlineshop.datamapper.ProductOrderDataMapper
-import com.kimiega.onlineshop.datamapper.ProductOrderKey
+import com.kimiega.onlineshop.datamapper.*
 import com.kimiega.onlineshop.entity.*
 import com.kimiega.onlineshop.exception.CouldNotBeSentException
+import com.kimiega.onlineshop.exception.ForbiddenException
 import com.kimiega.onlineshop.exception.NoSuchOrderException
 import com.kimiega.onlineshop.exception.NotEnoughProductsException
 import com.kimiega.onlineshop.externalService.ExternalDeliveryService
 import com.kimiega.onlineshop.repository.OrderRepository
+import com.kimiega.onlineshop.security.service.UserService
 import com.kimiega.onlineshop.service.*
+import org.springframework.security.core.context.SecurityContextHolder
 import org.springframework.stereotype.Service
 
 @Service
@@ -21,10 +21,13 @@ class OrderServiceImpl(
     private val paymentService: PaymentService,
     private val orderStatusLogService: OrderStatusLogService,
     private val externalDeliveryService: ExternalDeliveryService,
+    private val userService: UserService,
 ) : OrderService {
     override fun createOrder(orderDetails: OrderDetails): CreatedOrder {
+       val userId = getUserId()
        val order = OrderDataMapper(
-            orderPrice = getOrderPrice(orderDetails)
+            orderPrice = getOrderPrice(orderDetails),
+            user = UserDataMapper(id = userId),
         )
         val order2 = orderRepository.save(order)
         val products = orderDetails.products
@@ -32,7 +35,7 @@ class OrderServiceImpl(
                 id = ProductOrderKey(productId = it.productId),
                 count = it.count,
                 order = OrderDataMapper(id = order2.id),
-                product = ProductDataMapper(id = it.productId)
+                product = ProductDataMapper(id = it.productId),
             )}
 
         val savedOrder = orderRepository.save(order2.copy(listOfProducts = products))
@@ -51,6 +54,7 @@ class OrderServiceImpl(
         val order = orderRepository.findById(orderId)
         if (order.isEmpty)
             throw NoSuchOrderException("Order #${orderId} doesn't exists")
+        validatePermission(order.get())
         return Order(order.get())
     }
 
@@ -76,6 +80,7 @@ class OrderServiceImpl(
         val order = orderRepository.findById(orderId)
         if (order.isEmpty)
             throw NoSuchOrderException("Order #${orderId} doesn't exists")
+        validatePermission(order.get())
         if (!checkIsSentable(orderId))
             throw CouldNotBeSentException("Order #${orderId} couldn't be sent")
         return externalDeliveryService.sendPackage(DeliveryDetails(
@@ -85,11 +90,39 @@ class OrderServiceImpl(
         ))
     }
 
+    override fun getOrderStatuses(orderId: Long): List<OrderStatus> {
+        val order = orderRepository.findById(orderId)
+        if (order.isEmpty)
+            throw NoSuchOrderException("Order #${orderId} doesn't exists")
+        validatePermission(order.get())
+        return orderStatusLogService.getOrderStatuses(orderId)
+    }
+
+    override fun getPaymentByOrderId(orderId: Long): Payment {
+        val order = orderRepository.findById(orderId)
+        if (order.isEmpty)
+            throw NoSuchOrderException("Order #${orderId} doesn't exists")
+        validatePermission(order.get())
+        return paymentService.getPaymentByOrderId(orderId)
+    }
+
     private fun checkIsSentable(orderId: Long): Boolean {
         val statuses = orderStatusLogService.getOrderStatuses(orderId)
         if (statuses.any { it.status == EOrderStatus.Paid.name })
-            if (statuses.none { it -> it.status == EOrderStatus.InDelivery.name || statuses.none { it.status == EOrderStatus.Canceled.name}})
+            if (statuses.none { it -> it.status == EOrderStatus.InDelivery.name} || statuses.none { it.status == EOrderStatus.Canceled.name})
                 return true
         return false
     }
+
+    private fun validatePermission(order: OrderDataMapper) {
+        val authentication = SecurityContextHolder.getContext().authentication
+        if (!(authentication.authorities.any { it.authority == Roles.ADMIN.name } ||
+                authentication.authorities.any {it.authority == Roles.CUSTOMER.name} &&
+                authentication.name == order.user?.username))
+            throw ForbiddenException("You have no privileges")
+
+    }
+
+    private fun getUserId(): Long =
+        userService.findUserByUsername(SecurityContextHolder.getContext().authentication.name).id
 }

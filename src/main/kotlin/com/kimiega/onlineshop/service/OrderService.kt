@@ -9,4 +9,8 @@ interface OrderService {
     fun getOrder(orderId: Long): Order
 
     fun sendPackage(orderId: Long, userInfo: UserInfo): DeliveryInfo
+
+    fun getOrderStatuses(orderId: Long): List<OrderStatus>
+
+    fun getPaymentByOrderId(orderId: Long): Payment
 }
