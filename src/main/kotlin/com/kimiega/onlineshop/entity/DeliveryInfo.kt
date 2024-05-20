@@ -1,6 +1,6 @@
 package com.kimiega.onlineshop.entity
 
 data class DeliveryInfo(
-    val id: Long,
+    val deliveryId: Long,
     val link: String,
 )

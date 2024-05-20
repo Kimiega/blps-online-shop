@@ -17,7 +17,7 @@ class ExternalDeliveryServiceMock(
         if (!paymentCheckerService.isOrderPaid(deliveryDetails.orderId))
             throw OrderNotPaidException("Order #${deliveryDetails.orderId} is not paid")
         orderStatusLogService.addNewOrderStatus(deliveryDetails.orderId, EOrderStatus.InDelivery)
-       return DeliveryInfo(Random.nextLong(), "https://ya.ru")
+       return DeliveryInfo(Random.nextInt().toLong(), "https://ya.ru")
     }
 
     override fun cancelDelivery(orderId: Long) {
