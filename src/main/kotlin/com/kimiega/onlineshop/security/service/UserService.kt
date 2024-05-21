@@ -10,5 +10,5 @@ interface UserService {
 
     fun findUserByUserId(userId: Long) : AppUser
 
-    fun save(user : RegisterEntity): AppUser
+    fun save(registerEntity : RegisterEntity): AppUser
 }

@@ -18,5 +18,5 @@ data class RoleDataMapper(
     val privileges: Collection<PrivilegeDataMapper>? = mutableListOf()
 ) {
     @ManyToMany(mappedBy = "roles")
-    private val users: Collection<UserDataMapper>? = mutableListOf()
+    private val users: Collection<UserDataMapper> = mutableListOf()
 }

@@ -6,7 +6,6 @@ import com.kimiega.onlineshop.dto.response.AuthenticationResponse
 import com.kimiega.onlineshop.entity.LoginEntity
 import com.kimiega.onlineshop.entity.RegisterEntity
 import com.kimiega.onlineshop.security.service.AuthenticationService
-import com.kimiega.onlineshop.security.service.RoleService
 import io.swagger.v3.oas.annotations.tags.Tag
 import jakarta.validation.Valid
 import org.springframework.web.bind.annotation.*

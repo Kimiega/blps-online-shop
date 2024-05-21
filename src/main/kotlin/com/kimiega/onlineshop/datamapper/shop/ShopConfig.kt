@@ -1,7 +1,6 @@
 package com.kimiega.onlineshop.datamapper.shop
 
 import com.atomikos.jdbc.AtomikosDataSourceBean
-import com.kimiega.onlineshop.config.Database1
 import com.kimiega.onlineshop.config.Database2
 import jakarta.persistence.EntityManagerFactory
 import org.postgresql.xa.PGXADataSource

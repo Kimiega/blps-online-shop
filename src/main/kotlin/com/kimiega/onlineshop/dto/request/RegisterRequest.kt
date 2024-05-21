@@ -1,6 +1,5 @@
 package com.kimiega.onlineshop.dto.request
 
-import com.kimiega.onlineshop.entity.PaymentStatus
 import com.kimiega.onlineshop.entity.UserType
 import io.swagger.v3.oas.annotations.media.Schema
 import jakarta.validation.constraints.*

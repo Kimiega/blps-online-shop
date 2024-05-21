@@ -1,7 +1,6 @@
 package com.kimiega.onlineshop.config
 
 import com.atomikos.icatch.jta.UserTransactionManager
-import com.kimiega.onlineshop.security.configuration.JWTProperties
 import org.springframework.boot.context.properties.EnableConfigurationProperties
 import org.springframework.context.annotation.Bean
 import org.springframework.context.annotation.Configuration
