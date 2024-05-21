@@ -1,13 +1,16 @@
 package com.kimiega.onlineshop.service.impl
 
-import com.kimiega.onlineshop.datamapper.*
+import com.kimiega.onlineshop.datamapper.shop.OrderDataMapper
+import com.kimiega.onlineshop.datamapper.shop.ProductOrderDataMapper
+import com.kimiega.onlineshop.datamapper.shop.ProductOrderKey
+import com.kimiega.onlineshop.datamapper.shop.ProductDataMapper
 import com.kimiega.onlineshop.entity.*
 import com.kimiega.onlineshop.exception.CouldNotBeSentException
 import com.kimiega.onlineshop.exception.ForbiddenException
 import com.kimiega.onlineshop.exception.NoSuchOrderException
 import com.kimiega.onlineshop.exception.NotEnoughProductsException
 import com.kimiega.onlineshop.externalService.ExternalDeliveryService
-import com.kimiega.onlineshop.repository.OrderRepository
+import com.kimiega.onlineshop.repository.shop.OrderRepository
 import com.kimiega.onlineshop.security.service.UserService
 import com.kimiega.onlineshop.service.*
 import org.springframework.security.core.context.SecurityContextHolder
@@ -27,7 +30,7 @@ class OrderServiceImpl(
        val userId = getUserId()
        val order = OrderDataMapper(
             orderPrice = getOrderPrice(orderDetails),
-            user = UserDataMapper(id = userId),
+            userId = userId,
         )
         val order2 = orderRepository.save(order)
         val products = orderDetails.products
@@ -36,7 +39,8 @@ class OrderServiceImpl(
                 count = it.count,
                 order = OrderDataMapper(id = order2.id),
                 product = ProductDataMapper(id = it.productId),
-            )}
+            )
+            }
 
         val savedOrder = orderRepository.save(order2.copy(listOfProducts = products))
         orderStatusLogService.addNewOrderStatus(savedOrder.id!!, EOrderStatus.Started)
@@ -76,17 +80,18 @@ class OrderServiceImpl(
             .map { productGetterService.getProduct(it.productId).price * it.count }
             .foldRight(0.0, Double::plus)
 
-    override fun sendPackage(orderId: Long, userInfo: UserInfo): DeliveryInfo {
+    override fun sendPackage(orderId: Long): DeliveryInfo {
         val order = orderRepository.findById(orderId)
         if (order.isEmpty)
             throw NoSuchOrderException("Order #${orderId} doesn't exists")
         validatePermission(order.get())
         if (!checkIsSentable(orderId))
             throw CouldNotBeSentException("Order #${orderId} couldn't be sent")
+        val userEmail = userService.findUserByUserId(getUserId()).email
         return externalDeliveryService.sendPackage(DeliveryDetails(
             orderId = order.get().id!!,
             products = order.get().listOfProducts!!.map {ProductOrder(it.id!!.productId!!, it.count!!)},
-            userEmail = userInfo.userEmail
+            userEmail = userEmail
         ))
     }
 
@@ -118,7 +123,7 @@ class OrderServiceImpl(
         val authentication = SecurityContextHolder.getContext().authentication
         if (!(authentication.authorities.any { it.authority == Roles.ADMIN.name } ||
                 authentication.authorities.any {it.authority == Roles.CUSTOMER.name} &&
-                authentication.name == order.user?.username))
+                authentication.name == userService.findUserByUserId(order.userId!!).username))
             throw ForbiddenException("You have no privileges")
 
     }

@@ -1,4 +1,4 @@
-package com.kimiega.onlineshop.datamapper
+package com.kimiega.onlineshop.datamapper.usermanagement
 
 import jakarta.persistence.*
 
@@ -21,6 +21,4 @@ data class UserDataMapper(
     )
     val roles: Collection<RoleDataMapper>? = mutableListOf()
 ) {
-    @OneToMany(cascade = [(CascadeType.ALL)], fetch = FetchType.EAGER, mappedBy = "user")
-    val listOfOrders : List<OrderDataMapper>? = mutableListOf()
 }

@@ -1,9 +1,9 @@
 package com.kimiega.onlineshop.security.service.impl
 
-import com.kimiega.onlineshop.datamapper.PrivilegeDataMapper
+import com.kimiega.onlineshop.datamapper.usermanagement.PrivilegeDataMapper
 import com.kimiega.onlineshop.entity.Privilege
 import com.kimiega.onlineshop.exception.NoSuchPrivilegeException
-import com.kimiega.onlineshop.repository.PrivilegeRepository
+import com.kimiega.onlineshop.repository.usermanagement.PrivilegeRepository
 import com.kimiega.onlineshop.security.service.PrivilegeService
 import org.springframework.stereotype.Service
 

@@ -1,4 +1,4 @@
-package com.kimiega.onlineshop.datamapper
+package com.kimiega.onlineshop.datamapper.shop
 
 import jakarta.persistence.*
 @Entity(name = "payments")

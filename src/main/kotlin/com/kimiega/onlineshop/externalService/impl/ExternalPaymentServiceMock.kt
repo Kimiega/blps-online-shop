@@ -4,7 +4,7 @@ import com.kimiega.onlineshop.entity.*
 import com.kimiega.onlineshop.exception.NoPaymentExistsException
 import com.kimiega.onlineshop.exception.NoSuchOrderException
 import com.kimiega.onlineshop.externalService.ExternalPaymentService
-import com.kimiega.onlineshop.repository.PaymentRepository
+import com.kimiega.onlineshop.repository.shop.PaymentRepository
 import com.kimiega.onlineshop.service.OrderStatusLogService
 import org.springframework.stereotype.Service
 import kotlin.random.Random

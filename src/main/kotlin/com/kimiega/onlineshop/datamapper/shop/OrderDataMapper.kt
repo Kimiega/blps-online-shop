@@ -1,4 +1,4 @@
-package com.kimiega.onlineshop.datamapper
+package com.kimiega.onlineshop.datamapper.shop
 
 import jakarta.persistence.*
 @Entity(name = "orders")
@@ -9,9 +9,8 @@ data class OrderDataMapper(
     val listOfProducts : List<ProductOrderDataMapper>? = mutableListOf(),
     @Column(name = "order_price", unique = false, nullable = false, precision = 2)
     val orderPrice: Double? = null,
-    @ManyToOne
-    @JoinColumn(name = "user_id", referencedColumnName = "id", unique = false, nullable = false)
-    val user: UserDataMapper? = null,
+    @Column(name = "user_id", unique = false, nullable = false)
+    val userId: Long? = null,
     @OneToMany(cascade = [(CascadeType.ALL)], fetch = FetchType.LAZY, mappedBy = "order")
     val listOfStatusLog : List<OrderStatusLogDataMapper>? = mutableListOf(),
 )

@@ -11,9 +11,15 @@ services:
       - "8080:8080/tcp"
     networks:
       - onlineshop-network
-  postgres:
-    container_name: postgres-container-online-shop
+  postgres-shop:
+    container_name: postgres-container-online-shop-shop
     image: postgres
+    command:
+      - "postgres"
+      - "-c"
+      - "max_connections=1000"
+      - "-c"
+      - "max_prepared_transactions=100"
     environment:
       POSTGRES_USER: postgres
       POSTGRES_PASSWORD: password
@@ -23,7 +29,29 @@ services:
     expose:
       - "5432"
     ports:
-      - "5432:5432/tcp"
+      - "5557:5432/tcp"
+    networks:
+      - onlineshop-network
+  postgres-um:
+    container_name: postgres-container-online-shop-um
+    image: postgres
+    command:
+      - "postgres"
+      - "-c"
+      - "max_connections=1000"
+      - "-c"
+      - "max_prepared_transactions=100"
+    environment:
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: password
+      PGDATA: /data/postgres
+
+    #    volumes:
+    #      - db-data2:/data/postgres
+    expose:
+      - "5432"
+    ports:
+      - "5556:5432/tcp"
     networks:
       - onlineshop-network
 

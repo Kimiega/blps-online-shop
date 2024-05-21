@@ -10,7 +10,7 @@ import org.springframework.web.bind.annotation.*
 @RequestMapping("/api/externalDelivery")
 @Tag(name = "External Delivery API")
 class ExternalDeliveryController(
-    val deliveryService: AcceptableDeliveryStatusService,
+    private val deliveryService: AcceptableDeliveryStatusService,
 ) {
     @PostMapping
     @CrossOrigin(origins = ["http://localhost:8080"])

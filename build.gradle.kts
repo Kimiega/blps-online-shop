@@ -24,15 +24,20 @@ dependencies {
     implementation("org.springframework.boot:spring-boot-starter-web")
     implementation("com.fasterxml.jackson.module:jackson-module-kotlin")
     implementation("org.jetbrains.kotlin:kotlin-reflect")
-    runtimeOnly("org.postgresql:postgresql")
+    implementation("org.postgresql:postgresql")
+    implementation("com.atomikos:transactions-jta:6.0.0:jakarta")
+    implementation("com.atomikos:transactions-jdbc:6.0.0:jakarta")
+    implementation("jakarta.jms:jakarta.jms-api:3.1.0")
+    implementation("jakarta.transaction:jakarta.transaction-api:2.0.1")
+////    implementation("javax.transaction:jta:1.1")
     implementation("org.springdoc:springdoc-openapi-starter-webmvc-ui:2.5.0")
-    //security
+//    //security
     implementation("io.jsonwebtoken:jjwt-api:0.12.3")
     implementation("io.jsonwebtoken:jjwt-impl:0.12.3")
     implementation("io.jsonwebtoken:jjwt-jackson:0.12.3")
     implementation("org.springframework.boot:spring-boot-starter-security")
     testImplementation("org.springframework.security:spring-security-test")
-//    runtimeOnly("com.datastax.cassandra:cassandra-driver-core:4.0.0")
+////    runtimeOnly("com.datastax.cassandra:cassandra-driver-core:4.0.0")
     testImplementation("org.springframework.boot:spring-boot-starter-test")
 }
 

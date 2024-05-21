@@ -1,13 +1,10 @@
 package com.kimiega.onlineshop.controller
 
 import com.kimiega.onlineshop.dto.request.OrderRequest
-import com.kimiega.onlineshop.dto.request.UserInfoRequest
 import com.kimiega.onlineshop.dto.response.*
 import com.kimiega.onlineshop.entity.OrderDetails
 import com.kimiega.onlineshop.entity.OrdersProduct
-import com.kimiega.onlineshop.entity.UserInfo
 import com.kimiega.onlineshop.service.OrderService
-import com.kimiega.onlineshop.service.OrderStatusLogService
 import io.swagger.v3.oas.annotations.tags.Tag
 import org.springframework.http.ResponseEntity
 import org.springframework.security.access.prepost.PreAuthorize
@@ -53,9 +50,8 @@ class OrderController(
     @PreAuthorize("hasAuthority('SEND_PACKAGE')")
     fun sendPackage(
         @PathVariable("orderId") orderId: Long,
-        @RequestBody userInfoRequest: UserInfoRequest,
     ): ResponseEntity<DeliveryInfoResponse> {
-        val deliveryInfo = orderService.sendPackage(orderId, UserInfo(userInfoRequest.userEmail))
+        val deliveryInfo = orderService.sendPackage(orderId)
         return ResponseEntity.ok(DeliveryInfoResponse(deliveryInfo.deliveryId, deliveryInfo.link))
     }
 

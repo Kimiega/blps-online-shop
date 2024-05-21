@@ -3,7 +3,7 @@ package com.kimiega.onlineshop.service.impl
 import com.kimiega.onlineshop.entity.ProductOrder
 import com.kimiega.onlineshop.exception.NoSuchProductException
 import com.kimiega.onlineshop.exception.NotEnoughProductsException
-import com.kimiega.onlineshop.repository.ProductRepository
+import com.kimiega.onlineshop.repository.shop.ProductRepository
 import com.kimiega.onlineshop.service.BookingService
 import org.springframework.stereotype.Service
 

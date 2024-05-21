@@ -18,7 +18,7 @@ import org.springframework.web.bind.annotation.RestController
 @RequestMapping("/api/products")
 @Tag(name = "Products API")
 class ProductController(
-    val productService: ProductService,
+    private val productService: ProductService,
 ) {
     @GetMapping
     @PreAuthorize("hasAuthority('READ_PRODUCT')")

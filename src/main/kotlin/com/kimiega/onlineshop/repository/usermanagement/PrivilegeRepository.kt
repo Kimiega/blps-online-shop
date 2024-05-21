@@ -1,6 +1,6 @@
-package com.kimiega.onlineshop.repository
+package com.kimiega.onlineshop.repository.usermanagement
 
-import com.kimiega.onlineshop.datamapper.PrivilegeDataMapper
+import com.kimiega.onlineshop.datamapper.usermanagement.PrivilegeDataMapper
 import org.springframework.data.jpa.repository.JpaRepository
 import org.springframework.stereotype.Repository
 import java.util.*

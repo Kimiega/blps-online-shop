@@ -1,14 +1,13 @@
 package com.kimiega.onlineshop.security.service.impl
 
-import com.kimiega.onlineshop.datamapper.PrivilegeDataMapper
-import com.kimiega.onlineshop.datamapper.RoleDataMapper
+import com.kimiega.onlineshop.datamapper.usermanagement.PrivilegeDataMapper
+import com.kimiega.onlineshop.datamapper.usermanagement.RoleDataMapper
 import com.kimiega.onlineshop.entity.AppRole
 import com.kimiega.onlineshop.entity.Privilege
 import com.kimiega.onlineshop.exception.NoSuchRoleException
-import com.kimiega.onlineshop.repository.RoleRepository
+import com.kimiega.onlineshop.repository.usermanagement.RoleRepository
 import com.kimiega.onlineshop.security.service.RoleService
 import org.springframework.stereotype.Service
-import org.springframework.transaction.annotation.Transactional
 
 @Service
 class RoleServiceImpl(

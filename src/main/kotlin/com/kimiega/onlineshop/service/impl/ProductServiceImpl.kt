@@ -1,9 +1,9 @@
 package com.kimiega.onlineshop.service.impl
 
-import com.kimiega.onlineshop.datamapper.ProductDataMapper
+import com.kimiega.onlineshop.datamapper.shop.ProductDataMapper
 import com.kimiega.onlineshop.entity.Product
 import com.kimiega.onlineshop.exception.NoSuchProductException
-import com.kimiega.onlineshop.repository.ProductRepository
+import com.kimiega.onlineshop.repository.shop.ProductRepository
 import com.kimiega.onlineshop.service.ProductService
 import org.springframework.stereotype.Service
 
@@ -31,7 +31,8 @@ class ProductServiceImpl(
                 name = name,
                 description = description,
                 price = price,
-                count = count))
+                count = count)
+        )
         return convertProductDataMapperToProduct(product)
     }
 

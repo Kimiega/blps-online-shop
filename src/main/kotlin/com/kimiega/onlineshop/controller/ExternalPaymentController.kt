@@ -10,7 +10,7 @@ import org.springframework.web.bind.annotation.*
 @RequestMapping("/api/externalPayment")
 @Tag(name = "External Payment API")
 class ExternalPaymentController(
-    val paymentService: AcceptablePaymentService,
+    private val paymentService: AcceptablePaymentService,
 ) {
     @PostMapping
     @CrossOrigin(origins = ["http://localhost:8080"])

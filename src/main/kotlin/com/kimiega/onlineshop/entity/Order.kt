@@ -1,6 +1,6 @@
 package com.kimiega.onlineshop.entity
 
-import com.kimiega.onlineshop.datamapper.OrderDataMapper
+import com.kimiega.onlineshop.datamapper.shop.OrderDataMapper
 
 
 data class Order(
@@ -12,7 +12,7 @@ data class Order(
     constructor(orderDataMapper: OrderDataMapper) : this(
         orderDataMapper.id!!,
         orderDataMapper.orderPrice!!,
-        orderDataMapper.user!!.id!!,
+        orderDataMapper.userId!!,
         orderDataMapper.listOfProducts!!.map{ProductOrder(it.id!!.productId!!, it.count!!)},
         )
 }

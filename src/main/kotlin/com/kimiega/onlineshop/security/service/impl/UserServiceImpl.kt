@@ -1,13 +1,12 @@
 package com.kimiega.onlineshop.security.service.impl
 
-import com.kimiega.onlineshop.datamapper.RoleDataMapper
-import com.kimiega.onlineshop.datamapper.UserDataMapper
-import com.kimiega.onlineshop.entity.AppRole
+import com.kimiega.onlineshop.datamapper.usermanagement.RoleDataMapper
+import com.kimiega.onlineshop.datamapper.usermanagement.UserDataMapper
 import com.kimiega.onlineshop.entity.AppUser
 import com.kimiega.onlineshop.entity.RegisterEntity
 import com.kimiega.onlineshop.entity.Roles
 import com.kimiega.onlineshop.exception.NoSuchUsernameException
-import com.kimiega.onlineshop.repository.UserRepository
+import com.kimiega.onlineshop.repository.usermanagement.UserRepository
 import com.kimiega.onlineshop.security.service.RoleProvider
 import com.kimiega.onlineshop.security.service.RoleService
 import com.kimiega.onlineshop.security.service.UserService
@@ -37,11 +36,13 @@ class UserServiceImpl(
     }
 
     override fun save(registerEntity: RegisterEntity): AppUser {
-        val user =  userRepository.save(UserDataMapper(
+        val user =  userRepository.save(
+            UserDataMapper(
             username = registerEntity.login,
             email = registerEntity.email,
             password = encoder.encode(registerEntity.password),
-        ))
+        )
+        )
         return user.mapToAppUser()
     }
 

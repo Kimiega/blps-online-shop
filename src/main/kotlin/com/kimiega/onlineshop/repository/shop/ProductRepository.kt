@@ -1,6 +1,6 @@
-package com.kimiega.onlineshop.repository
+package com.kimiega.onlineshop.repository.shop
 
-import com.kimiega.onlineshop.datamapper.ProductDataMapper
+import com.kimiega.onlineshop.datamapper.shop.ProductDataMapper
 import org.springframework.data.jpa.repository.JpaRepository
 import org.springframework.stereotype.Repository
 

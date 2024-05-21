@@ -1,4 +1,4 @@
-package com.kimiega.onlineshop.datamapper
+package com.kimiega.onlineshop.datamapper.usermanagement
 
 import jakarta.persistence.*
 
