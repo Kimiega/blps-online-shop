@@ -9,8 +9,8 @@ interface OrderService {
     fun createOrder(orderDetails: OrderDetails): CreatedOrder
 
     fun getOrder(orderId: Long): Order
-    @Transactional(rollbackFor = [Exception::class])
 
+    @Transactional(rollbackFor = [Exception::class])
     fun sendPackage(orderId: Long): DeliveryInfo
 
     fun getOrderStatuses(orderId: Long): List<OrderStatus>
