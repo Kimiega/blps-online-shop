@@ -1,0 +1,27 @@
+server:
+  port: ${CART_PORT}
+spring:
+  application:
+    name: notification-consumer
+  main:
+    allow-bean-definition-overriding: true
+  mail:
+    host: smtp.yandex.ru
+    port: 465
+    username: email@example.com
+    password: password
+    protocol: smtps
+    properties:
+      mail:
+        smtp:
+          auth: true
+          starttls:
+            enable: true
+#  datasource:
+#    driver-class-name: org.postgresql.Driver
+#    url: jdbc:postgresql://postgres-shop:5432/postgres
+#    username: postgres
+#    password: password
+#  jpa:
+#    generate-ddl: true
+#    show-sql: true

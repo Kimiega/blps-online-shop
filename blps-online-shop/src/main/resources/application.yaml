@@ -1,0 +1,25 @@
+server:
+  port: ${MAIN_PORT}
+spring:
+  main:
+    allow-bean-definition-overriding: true
+springdoc:
+  api-docs:
+    path: /api-docs
+  swagger-ui:
+    path: /swagger-ui.html
+jwt:
+  key: TEMP_JWT_KEY_SHOULD_BE_CHANGED_AND_MOVED_TO_ENVIRONMENT
+  access-token-expiration: 3600000
+  refresh-token-expiration: 86400000
+db1:
+  url: jdbc:postgresql://postgres-um:5432/postgres
+  username: postgres
+  password: password
+db2:
+  url: jdbc:postgresql://postgres-shop:5432/postgres
+  username: postgres
+  password: password
+recommendation:
+  product-of-day:
+    cron: "0 12 * * *"
