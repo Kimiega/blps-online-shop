@@ -5,6 +5,7 @@ import com.kimiega.onlineshop.datamapper.shop.ProductOrderDataMapper
 import com.kimiega.onlineshop.datamapper.shop.ProductOrderKey
 import com.kimiega.onlineshop.datamapper.shop.ProductDataMapper
 import com.kimiega.onlineshop.entity.*
+import com.kimiega.onlineshop.common.entity.Notification
 import com.kimiega.onlineshop.exception.CouldNotBeSentException
 import com.kimiega.onlineshop.exception.ForbiddenException
 import com.kimiega.onlineshop.exception.NoSuchOrderException
@@ -25,6 +26,7 @@ class OrderServiceImpl(
     private val orderStatusLogService: OrderStatusLogService,
     private val externalDeliveryService: ExternalDeliveryService,
     private val userService: UserService,
+    private val notificationService: NotificationService,
 ) : OrderService {
     override fun createOrder(orderDetails: OrderDetails): CreatedOrder {
        val userId = getUserId()
@@ -47,7 +49,7 @@ class OrderServiceImpl(
         bookOrder(savedOrder.id, orderDetails.products)
 
         val payment = createPayment(savedOrder)
-
+        notificationService.sendNotification(createNotification(userId, "Order ${savedOrder.id}", "Order has been created"))
         return CreatedOrder(
             order = Order(savedOrder),
             payment = payment,
@@ -130,4 +132,9 @@ class OrderServiceImpl(
 
     private fun getUserId(): Long =
         userService.findUserByUsername(SecurityContextHolder.getContext().authentication.name).id
+
+    private fun createNotification(userId: Long, subject: String, text: String): Notification {
+        val email = userService.findUserByUserId(userId).email
+        return Notification(email, subject, text)
+    }
 }

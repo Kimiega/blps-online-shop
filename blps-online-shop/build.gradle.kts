@@ -20,6 +20,9 @@ repositories {
 }
 
 dependencies {
+    //common
+    implementation(project(":common"))
+    //spring
     implementation("org.springframework.boot:spring-boot-starter-data-jpa")
     implementation("org.springframework.boot:spring-boot-starter-web")
     implementation("com.fasterxml.jackson.module:jackson-module-kotlin")
@@ -29,6 +32,7 @@ dependencies {
     implementation("com.atomikos:transactions-jdbc:6.0.0:jakarta")
     implementation("jakarta.jms:jakarta.jms-api:3.1.0")
     implementation("jakarta.transaction:jakarta.transaction-api:2.0.1")
+    implementation("org.springframework.amqp:spring-rabbit:3.1.5")
 ////    implementation("javax.transaction:jta:1.1")
     implementation("org.springdoc:springdoc-openapi-starter-webmvc-ui:2.5.0")
 //    //security

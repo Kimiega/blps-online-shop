@@ -1,6 +1,7 @@
 package com.kimiega.onlineshop.utils
 
 import jakarta.servlet.http.HttpServletResponse
+import com.kimiega.onlineshop.common.utils.convertObjectToJson
 
 fun includeErrorToHttpResponse(
     code : Int,

@@ -1,5 +1,5 @@
 server:
-  port: 8080
+  port: ${MAIN_PORT}
 spring:
   main:
     allow-bean-definition-overriding: true
@@ -20,3 +20,6 @@ db2:
   url: jdbc:postgresql://postgres-shop:5432/postgres
   username: postgres
   password: password
+recommendation:
+  product-of-day:
+    cron: "0 12 * * *"

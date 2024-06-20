@@ -3,12 +3,49 @@ version: "3.8"
 services:
   backend:
     build:
-      context: ..
+      context: blps-online-shop
     container_name: backend-online-shop
     expose:
       - "8080"
     ports:
       - "8080:8080/tcp"
+    environment:
+      MAIN_PORT: 8080
+    networks:
+      - onlineshop-network
+  cart-consumer-1:
+    build:
+      context: notification-consumer
+    container_name: notification-consumer-1
+    expose:
+      - "8080"
+    ports:
+      - "8081:8080/tcp"
+    environment:
+      CART_PORT: 8080
+    networks:
+      - onlineshop-network
+  cart-consumer-2:
+    build:
+      context: notification-consumer
+    container_name: notification-consumer-2
+    expose:
+      - "8080"
+    ports:
+      - "8082:8080/tcp"
+    environment:
+      CART_PORT: 8080
+    networks:
+      - onlineshop-network
+  rabbitmq:
+    image: rabbitmq:3.13-management
+    container_name: rabbitmq-container
+    expose:
+      - "5672"
+      - "15672"
+    ports:
+      - "5672:5672"
+      - "15672:15672"
     networks:
       - onlineshop-network
   postgres-shop:
