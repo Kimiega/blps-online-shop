@@ -33,7 +33,6 @@ dependencies {
     implementation("jakarta.jms:jakarta.jms-api:3.1.0")
     implementation("jakarta.transaction:jakarta.transaction-api:2.0.1")
     implementation("org.springframework.amqp:spring-rabbit:3.1.5")
-////    implementation("javax.transaction:jta:1.1")
     implementation("org.springdoc:springdoc-openapi-starter-webmvc-ui:2.5.0")
 //    //security
     implementation("io.jsonwebtoken:jjwt-api:0.12.3")
@@ -41,7 +40,6 @@ dependencies {
     implementation("io.jsonwebtoken:jjwt-jackson:0.12.3")
     implementation("org.springframework.boot:spring-boot-starter-security")
     testImplementation("org.springframework.security:spring-security-test")
-////    runtimeOnly("com.datastax.cassandra:cassandra-driver-core:4.0.0")
     testImplementation("org.springframework.boot:spring-boot-starter-test")
 }
 
