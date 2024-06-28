@@ -6,6 +6,7 @@ import com.kimiega.onlineshop.dto.response.AuthenticationResponse
 import com.kimiega.onlineshop.entity.LoginEntity
 import com.kimiega.onlineshop.entity.RegisterEntity
 import com.kimiega.onlineshop.security.service.AuthenticationService
+import io.micrometer.core.annotation.Timed
 import io.swagger.v3.oas.annotations.tags.Tag
 import jakarta.validation.Valid
 import org.springframework.web.bind.annotation.*
@@ -17,6 +18,7 @@ class AuthController(
     private val authenticationService: AuthenticationService,
 ) {
     @PostMapping("/login")
+    @Timed(value = "authentication_login")
     fun login(
         @RequestBody @Valid loginRequest: LoginRequest,
     ): AuthenticationResponse {
@@ -30,6 +32,7 @@ class AuthController(
     }
 
     @PostMapping("/register")
+    @Timed(value = "authentication_register")
     fun register(
         @RequestBody @Valid registerRequest: RegisterRequest,
     ): AuthenticationResponse {

@@ -5,12 +5,12 @@ import org.springframework.transaction.annotation.Transactional
 
 interface OrderService {
 
-    @Transactional(rollbackFor = [Exception::class])
+    @Transactional(rollbackFor = [Exception::class], timeout = 300)
     fun createOrder(orderDetails: OrderDetails): CreatedOrder
 
     fun getOrder(orderId: Long): Order
 
-    @Transactional(rollbackFor = [Exception::class])
+    @Transactional(rollbackFor = [Exception::class], timeout = 300)
     fun sendPackage(orderId: Long): DeliveryInfo
 
     fun getOrderStatuses(orderId: Long): List<OrderStatus>

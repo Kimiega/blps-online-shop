@@ -23,3 +23,19 @@ db2:
 recommendation:
   product-of-day:
     cron: "0 0 12 * * *"
+
+management:
+  endpoints:
+    web:
+      exposure:
+        include: "prometheus, health, info"
+  prometheus:
+    metrics:
+      export:
+        enabled: true
+  endpoint:
+    prometheus:
+      enabled: true
+  observations:
+    annotations:
+      enabled: true

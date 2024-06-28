@@ -38,7 +38,8 @@ services:
     networks:
       - onlineshop-network
   rabbitmq:
-    image: rabbitmq:3.13-management
+    build:
+      context: rabbitmq
     container_name: rabbitmq-container
     expose:
       - "5672"
@@ -91,6 +92,40 @@ services:
       - "5556:5432/tcp"
     networks:
       - onlineshop-network
+  prometheus:
+    build:
+      context: prometheus
+    container_name: prometheus
+    expose:
+      - "9090"
+    ports:
+      - "9090:9090"
+    networks:
+      - onlineshop-network
+  grafana:
+    build:
+      context: grafana
+    container_name: grafana
+    ports:
+      - "3000:3000"
+    networks:
+      - onlineshop-network
+  postgres-shop-exporter:
+    build:
+      context: postgres-exporter
+    container_name: postgres-shop-exporter
+    networks:
+      - onlineshop-network
+    environment:
+      DATA_SOURCE_NAME: "postgresql://postgres:password@postgres-shop:5432/postgres?sslmode=disable"
+  postgres-um-exporter:
+    build:
+      context: postgres-exporter
+    container_name: postgres-um-exporter
+    networks:
+      - onlineshop-network
+    environment:
+      DATA_SOURCE_NAME: "postgresql://postgres:password@postgres-um:5432/postgres?sslmode=disable"
 
 volumes:
   db-data2:

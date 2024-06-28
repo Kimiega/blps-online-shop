@@ -4,7 +4,9 @@ import com.kimiega.onlineshop.dto.request.OrderRequest
 import com.kimiega.onlineshop.dto.response.*
 import com.kimiega.onlineshop.entity.OrderDetails
 import com.kimiega.onlineshop.entity.OrdersProduct
+import com.kimiega.onlineshop.metrics.OrderMetrics
 import com.kimiega.onlineshop.service.OrderService
+import io.micrometer.core.annotation.Timed
 import io.swagger.v3.oas.annotations.tags.Tag
 import org.springframework.http.ResponseEntity
 import org.springframework.security.access.prepost.PreAuthorize
@@ -15,10 +17,12 @@ import org.springframework.web.bind.annotation.*
 @Tag(name = "Orders API")
 class OrderController(
     private val orderService: OrderService,
+    private val orderMetrics: OrderMetrics,
 ) {
 
     @PostMapping
     @PreAuthorize("hasAuthority('MAKE_ORDER')")
+    @Timed(value = "order_creator")
     fun createOrder(
         @RequestBody order: OrderRequest,
     ): ResponseEntity<OrderCreatedResponse> {
@@ -27,11 +31,13 @@ class OrderController(
                 OrdersProduct(it.productId, it.count)
             }
         ))
+        orderMetrics.increaseOrderCounter()
         return ResponseEntity.ok(OrderCreatedResponse(createdOrder))
     }
 
     @GetMapping("/{orderId}")
     @PreAuthorize("hasAuthority('READ_ORDER')")
+    @Timed(value = "order_getter")
     fun getOrder(
         @PathVariable("orderId") orderId: Long
     ): ResponseEntity<OrderResponse> {
@@ -40,6 +46,7 @@ class OrderController(
 
     @GetMapping("/{orderId}/statuses")
     @PreAuthorize("hasAuthority('READ_ORDER')")
+    @Timed(value = "order_status_getter")
     fun getOrderStatuses(
         @PathVariable("orderId") orderId: Long
     ): ResponseEntity<List<OrderStatusResponse>> {

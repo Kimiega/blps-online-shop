@@ -4,6 +4,7 @@ import com.kimiega.onlineshop.dto.request.ProductRequest
 import com.kimiega.onlineshop.dto.response.ProductResponse
 import com.kimiega.onlineshop.dto.response.ProductsResponse
 import com.kimiega.onlineshop.service.ProductService
+import io.micrometer.core.annotation.Timed
 import io.swagger.v3.oas.annotations.tags.Tag
 import org.springframework.http.ResponseEntity
 import org.springframework.security.access.prepost.PreAuthorize
@@ -22,6 +23,7 @@ class ProductController(
 ) {
     @GetMapping
     @PreAuthorize("hasAuthority('READ_PRODUCT')")
+    @Timed(value = "product_all_getter")
     fun getProducts(): ResponseEntity<ProductsResponse> {
         val products = productService.getProducts()
         return ResponseEntity.ok(ProductsResponse(products.map{ProductResponse(it)}))
@@ -29,6 +31,7 @@ class ProductController(
 
     @PostMapping
     @PreAuthorize("hasAuthority('ADD_PRODUCT')")
+    @Timed(value = "product_adder")
     fun addProduct(
         @RequestBody product: ProductRequest,
     ): ResponseEntity<Void> {
@@ -38,6 +41,7 @@ class ProductController(
 
     @GetMapping("/{productId}")
     @PreAuthorize("hasAuthority('READ_PRODUCT')")
+    @Timed(value = "product_getter")
     fun getProduct(
         @PathVariable("productId") productId: Long
     ): ResponseEntity<ProductResponse> {
